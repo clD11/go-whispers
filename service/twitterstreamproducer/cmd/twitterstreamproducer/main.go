@@ -1,17 +1,21 @@
 package main
 
 import (
+	"fmt"
 	. "github.com/clD11/go-whispers/service/twitterstreamproducer/internal"
 	"time"
 )
 
 func main() {
+	fmt.Println("Starting Twitter Stream Producer")
+
 	twitterStreamWrapperConfig := TwitterStreamWrapperConfig{
-		APIKey:            "ajpcpacmp",
-		APISecretKey:      "nosdnvosdnvonsdovnosd",
-		AccessToken:       "snidviosdnvionsdfviondfiovndfiovnosdfnvoi",
-		AccessTokenSecret: "vcjsopvmpvmpsdmvpsdmvpdspovmopsdmvopmsdopmvpmsdpvm",
+		APIKey:            "test",
+		APISecretKey:      "test",
+		AccessToken:       "test",
+		AccessTokenSecret: "test",
 	}
+
 	twitterStreamWrapperFilter := TwitterStreamWrapperFilter{
 		Track: []string{"ETH,BTC"},
 	}
@@ -19,7 +23,9 @@ func main() {
 	twitterStreamWrapper := NewTwitterStreamWrapper(twitterStreamWrapperConfig, twitterStreamWrapperFilter)
 	twitterStreamWrapper.Start()
 
-	time.Sleep(60 * time.Second)
+	time.Sleep(30 * time.Second)
+
+	fmt.Println("Stopping Twitter Stream Producer")
 
 	twitterStreamWrapper.Stop()
 }

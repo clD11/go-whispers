@@ -5,9 +5,6 @@ import (
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
 	"log"
-	"os"
-	"os/signal"
-	"syscall"
 )
 
 type TwitterStreamWrapperConfig struct {
@@ -27,6 +24,7 @@ type TwitterStreamWrapper struct {
 
 func NewTwitterStreamWrapper(twitterStreamWrapperConfig TwitterStreamWrapperConfig,
 	twitterStreamWrapperFilter TwitterStreamWrapperFilter) TwitterStreamWrapper {
+
 	config := oauth1.NewConfig(twitterStreamWrapperConfig.APIKey, twitterStreamWrapperConfig.APISecretKey)
 	token := oauth1.NewToken(twitterStreamWrapperConfig.AccessToken, twitterStreamWrapperConfig.AccessTokenSecret)
 	httpClient := config.Client(oauth1.NoContext, token)
@@ -53,15 +51,7 @@ func (t *TwitterStreamWrapper) Start() {
 	demux.Tweet = func(tweet *twitter.Tweet) {
 		fmt.Println(tweet.Text)
 	}
-
 	go demux.HandleChan(t.twitterStream.Messages)
-
-	ch := make(chan os.Signal)
-	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
-	log.Println(<-ch)
-
-	fmt.Println("Stopping Stream...")
-	t.twitterStream.Stop()
 }
 
 func (t *TwitterStreamWrapper) Stop() {

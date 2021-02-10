@@ -1,0 +1,14 @@
+.main-navbar {
+    background-color: #FF6A5A;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.navbar-bars-icon {
+    /*color: beige;*/
+    color:  #272D4D;
+    /*color: #B83564;*/
+    /*color: #FF6A5A;*/
+    /*color: #83B8AA;*/
+    /*color: #FFB350;*/
+}

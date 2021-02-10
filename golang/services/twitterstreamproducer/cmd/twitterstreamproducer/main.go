@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	. "github.com/clD11/go-whispers/service/twitterstreamproducer/internal"
+	. "github.com/clD11/go-whispers/services/twitterstreamproducer/internal"
 	"time"
 )
 

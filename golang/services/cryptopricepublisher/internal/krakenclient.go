@@ -16,11 +16,6 @@ type KrakenClient struct {
 	conn *websocket.Conn
 }
 
-type KrakenResponseWrapper struct {
-	result string   `json:"result"`
-	error  []string `json:"error"`
-}
-
 type SubscribeEvent struct {
 	Event        string       `json:"event"`
 	Reqid        int          `json:"reqid,omitempty"`
@@ -58,7 +53,11 @@ func NewKrakenClient() KrakenClient {
 	}
 }
 
+var count = 0
+
 func (k *KrakenClient) Subscribe(subscribeEvent SubscribeEvent) {
+	count += 1
+	id := count
 	event, err := json.Marshal(subscribeEvent)
 	log.Println(string(event))
 	if err != nil {
@@ -73,14 +72,16 @@ func (k *KrakenClient) Subscribe(subscribeEvent SubscribeEvent) {
 				log.Println("read:", err)
 				return
 			}
-			input <- string(message)
+			log.Printf("process_id: %d %s\n", id, string(message))
+			//input <- string(message)
 		}
 	}(input)
 
 	for i := 0; i < 5; i++ {
-		log.Printf("recv: %s", <-input)
-		time.Sleep(2 * time.Second)
+		log.Printf("waiting: %d ses", 5-i)
+		time.Sleep(5 * time.Second)
 	}
+	log.Println("*** END PROCESS ***")
 }
 
 func (k *KrakenClient) Close() {

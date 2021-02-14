@@ -13,7 +13,8 @@
   },
   "endpoints": [
     {
-      "endpoint": "/splash",
+      "endpoint": "/",
+      "output_encoding": "json",
       "backend": [
         {
           "url_pattern": "/",

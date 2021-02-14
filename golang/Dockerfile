@@ -19,9 +19,9 @@ ENV GOARCH amd64
 RUN go install ./services/cryptopricepublisher/...
 
 # Build smaller image
-FROM scratch
+FROM alpine:latest
 
-#RUN apk --no-cache add ca-certificates
+RUN apk --no-cache add ca-certificates
 
 COPY --from=builder /go/bin /
 

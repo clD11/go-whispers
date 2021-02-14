@@ -17,6 +17,3 @@ services:
       - "8080:8080"
     depends_on:
       - crypto-price-publisher
-networks:
-  local:
-    driver: bridge

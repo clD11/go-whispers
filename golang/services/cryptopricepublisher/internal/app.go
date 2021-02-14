@@ -1,15 +1,19 @@
 package internal
 
 import (
+	"github.com/clD11/go-whispers/golang/services/cryptopricepublisher/internal/handler"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 type Application struct {
 	server   *http.Server
 	router   *mux.Router
-	shutdown chan bool
+	shutdown chan os.Signal
 }
 
 func NewApplication() Application {
@@ -17,26 +21,25 @@ func NewApplication() Application {
 }
 
 func (a *Application) Start(host string) {
-	log.Println("starting server...")
+	log.Println("Starting Server...")
 
 	a.router = mux.NewRouter()
-	a.router.HandleFunc("/api/v1/app/stop", a.Stop).Methods(http.MethodGet)
+	a.router.HandleFunc("/", handler.GetLanding).Methods(http.MethodGet)
+
 	a.server = &http.Server{Addr: host, Handler: a.router}
-	a.shutdown = make(chan bool)
+
+	a.shutdown = make(chan os.Signal)
+	signal.Notify(a.shutdown, os.Interrupt, syscall.SIGTERM)
 
 	go func() {
-		a.shutdown <- true
-		log.Println("shutting down server...")
-		close(a.shutdown)
+		<-a.shutdown
+		log.Println("Server Shutdown")
 		a.server.SetKeepAlivesEnabled(false)
 		a.server.Close()
+		close(a.shutdown)
 	}()
 
-	a.server.ListenAndServe()
-}
+	log.Println("Listening")
 
-func (a *Application) Stop(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("server shutdown"))
-	w.WriteHeader(200)
-	<-a.shutdown
+	a.server.ListenAndServe()
 }

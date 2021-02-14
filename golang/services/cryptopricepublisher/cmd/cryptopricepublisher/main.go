@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	log.Println("starting crypto price publisher")
+	log.Println("Cryptocurrency Price Publisher")
 	app := internal.NewApplication()
 	app.Start(":8080")
 }

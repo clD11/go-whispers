@@ -1,34 +1,32 @@
-# Dockerfile References: https://docs.docker.com/engine/reference/builder/
-
-FROM golang:1.15
-
-# Enable to use modules
-# ENV GO111MODULE=on
-
-# Add Maintainer Info
-LABEL maintainer="clD11"
+FROM golang:1.15 AS builder
 
 # Create directory
-RUN mkdir -p $GOPATH/src/github.com/clD11/go-whispers
+RUN mkdir -p $GOPATH/src/github.com/clD11/go-whispers/golang
 
 # Set the Current Working Directory inside the container
-WORKDIR $GOPATH/src/github.com/clD11/go-whispers
+WORKDIR $GOPATH/src/github.com/clD11/go-whispers/golang
 
-## Download all the dependencies cache for faster builds
-COPY go.mod .
-COPY go.sum .
+# Copy everything from the current directory to the workdir inside the container
+COPY . .
+
 RUN go mod download
 
-# Copy everything from the current directory to the PWD(Present Working Directory) inside the container
-COPY . ./golang/services
+ENV GOOS linux
+ENV CGO_ENABLED 0
+ENV GOARCH amd64
 
-#RUN ls -l $GOPATH/src/github.com/clD11/go-whispers
-#
-### Install the package
-#RUN go install -v ./..
-#
+## Install binary into go/bin
+RUN go install ./services/cryptopricepublisher/...
+
+# Build smaller image
+FROM scratch
+
+#RUN apk --no-cache add ca-certificates
+
+COPY --from=builder /go/bin /
+
 ## This container exposes port 8080 to the outside world
-#EXPOSE 8080
-#
+EXPOSE 8080
+
 ## Run the executable
-#ENTRYPOINT ["cryptopricepublisher"]
+ENTRYPOINT ["/cryptopricepublisher"]

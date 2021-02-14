@@ -1,14 +1,10 @@
 version: '3'
 services:
   crypto-price-publisher:
+    image: crypto-price-publisher:latest
     build:
       context: ./golang
       dockerfile: ./Dockerfile
-      args:
-        project: ./services/cryptopricepublisher/cmd/cryptopricepublisher
-        port: 3001
-        environment:
-          APP_NAME=cryptopricepublisher
     ports:
       - "8080:8080"
     expose:

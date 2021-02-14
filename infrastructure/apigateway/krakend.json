@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "timeout": "3000ms",
+  "cache_ttl": "300s",
+  "name": "go-whisper",
+  "extra_config": {
+    "github_com/devopsfaith/krakend-gologging": {
+      "level": "DEBUG",
+      "prefix": "[KRAKEND]",
+      "syslog": false,
+      "stdout": true
+    }
+  },
+  "endpoints": [
+    {
+      "endpoint": "/splash",
+      "backend": [
+        {
+          "url_pattern": "/",
+          "host": [ "http://crypto-price-publisher:8081" ]
+        }
+      ]
+    }
+  ]
+}

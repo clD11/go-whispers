@@ -87,7 +87,6 @@ function LineGraph() {
         // A react-chart hyper-responsively and continuously fills the available
         // space of its parent element automatically
         // <Chart data={data} axes={axes} className="line-graph-main"/>
-        <h1>Hello</h1>
     )
 
     return lineChart;

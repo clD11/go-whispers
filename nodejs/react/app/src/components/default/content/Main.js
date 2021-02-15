@@ -10,7 +10,7 @@ class Main extends Component {
             <Container fluid className="content-main">
                 <Row className="">
                     <Col sm={12}>
-                        <h1>BTC/USD</h1>>
+                        <h1>go-whispers</h1>>
                     </Col>
                 </Row>
                 <Row className="">

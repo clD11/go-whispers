@@ -17,3 +17,14 @@ services:
       - "8080:8080"
     depends_on:
       - crypto-price-publisher
+  whisper-ui:
+    image: whisper-ui:latest
+    build:
+      context: ./nodejs
+      dockerfile: ./Dockerfile
+    ports:
+      - "3000:3000"
+    expose:
+      - 3000
+    depends_on:
+      - krakend-api-gateway

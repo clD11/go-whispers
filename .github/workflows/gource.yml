@@ -17,9 +17,10 @@ jobs:
       - name: 'Gource Action'
         uses: nbprojekt/gource-action@v1
         with:
-          gource_title: go-whispers
+          gource_title: 'Go-Whispers'
           gource_overlay_background_color: '0a0a0a'
           gource_hide_items: 'mouse,date,progress'
+          gource_camera_mode: 'track'
 
       - name: 'Upload gource video'
         uses: actions/upload-artifact@v2

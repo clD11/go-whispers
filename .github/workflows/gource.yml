@@ -19,7 +19,7 @@ jobs:
         with:
           gource_title: go-whispers
           gource_overlay_background_color: 0a0a0a
-          gource_hide_items: mouse,date
+          gource_hide_items: "mouse,date,progress"
 
 
       - name: 'Upload gource video'

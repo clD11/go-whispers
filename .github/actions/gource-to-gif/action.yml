@@ -4,4 +4,4 @@ author: 'clD11'
 
 runs:
   using: 'docker'
-  image: './Dockerfile
+  image: './Dockerfile'

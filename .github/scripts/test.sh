@@ -1,6 +1,7 @@
+#!/bin/bash
 printf 'Running Test Script'
 
-apk --update add --no-cache --virtual .runtime-deps \
-    bash \
-    ffmpeg;
+apt-get update
+apt-get upgrade
 
+ffmpeg -version

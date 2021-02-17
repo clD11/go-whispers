@@ -14,8 +14,7 @@ RUN \
 COPY ./entrypoint.sh /usr/local/bin/
 
 # Add executable right to scripts
-RUN \
-  chmod +x /usr/local/bin/entrypoint.sh; \
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Create working directories
 RUN \
@@ -29,18 +28,6 @@ RUN \
 # Set working directory with full access
 WORKDIR /gource
 RUN chmod -R 777 /gource
-
-# Set environment variables
-#ENV \
-#  DISPLAY=":99" \
-#  GLOBAL_FILTERS="" \
-#  GOURCE_FILTERS="" \
-#  GOURCE_USER_IMAGE_DIR="/gource/avatars" \
-#  H264_CRF="23" \
-#  H264_LEVEL="5.1" \
-#  H264_PRESET="medium" \
-#  INVERT_COLORS="false" \
-#  XVFB_WHD="3840x2160x24"
 
 # Set our entrypoint.
 ENTRYPOINT  ["bash", "/usr/local/bin/entrypoint.sh"]

@@ -18,11 +18,11 @@ jobs:
         uses: ./.github/actions/gource-to-gif
 
       - name: 'Run build script'
-        run: chmod +x ./.github/scripts/test.sh
+        run: chmod +x ./.github/scripts/convert.sh
         shell: bash
 
       - name: 'Run build script'
-        run: ./.github/scripts/test.sh
+        run: ./.github/scripts/convert.sh
         shell: bash
 
 

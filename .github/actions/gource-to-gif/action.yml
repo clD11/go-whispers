@@ -1,0 +1,7 @@
+name: 'Generate Gource GIF'
+description: 'Creates gource gif for use on repo readme'
+author: 'clD11'
+
+runs:
+  using: 'docker'
+  image: './Dockerfile

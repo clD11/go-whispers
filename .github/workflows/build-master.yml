@@ -9,7 +9,7 @@ jobs:
   build-master:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
+      - name: checkout master
         uses: actions/checkout@master
 
       - name: setup golang
@@ -17,9 +17,9 @@ jobs:
         with:
           go-version: '1.15'
 
-      - name: run tests
+      - name: run unit tests
         run: |
-          ./golang/go version
-          ./golang/go clean
-          ./golang/go test ./...
+          go version
+          go clean
+          go test ./...
         working-directory: ./golang

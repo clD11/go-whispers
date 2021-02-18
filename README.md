@@ -1,3 +1,5 @@
+![build-master](https://github.com/clD11/go-whispers/workflows/build-master/badge.svg?branch=master)
+
 # Whispers Roadmap PoC
 
 - [x] Decide between mono/polyrepo and a basic project layout🤺

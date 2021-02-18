@@ -1,0 +1,25 @@
+name: build-master
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-master:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@master
+
+      - name: setup golang
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.15'
+
+      - name: run tests
+        run: |
+          ./golang/go version
+          ./golang/go clean
+          ./golang/go test ./...
+        working-directory: ./golang

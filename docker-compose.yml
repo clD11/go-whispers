@@ -17,6 +17,16 @@ services:
       - "8080:8080"
     depends_on:
       - crypto-price-publisher
+  elasicmq:
+    image: softwaremill/elasticmq-native
+    container_name: elasicmq-native
+    ports:
+      - "9324:9324"
+      - "9325:9325"
+    expose:
+      - 9325
+    volumes:
+      - ./infrastructure/messaging/elasticmq-test.conf:/opt/elasticmq.conf
   whisper-ui:
     image: whisper-ui:latest
     build:

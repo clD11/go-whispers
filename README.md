@@ -16,7 +16,7 @@ Besides sharing the same name as my favorite crypto exchange and a fairly impact
 
 ## AWS SNS and SQS <a name="messaging"/>
 * Decided on SNS and SQS over Kafka as its simpler to get up and running 
-* For testing will use dockerised [elasticmq](https://github.com/softwaremill/elasticmq) to mock out SNS (trying to avoid overhead of [localstack](https://github.com/localstack/localstack) and keep things fast)
+* For testing will use dockerised [elasticmq](https://github.com/softwaremill/elasticmq)
 
 _Whisper initial ideas_ 
 ![whispers-design](whispers-design.jpg)

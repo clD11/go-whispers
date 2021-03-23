@@ -1,4 +1,6 @@
 # Directory-based project format:
+
+# IDEA
 .idea/
 .idea/workspace.xml
 **/.idea/workspace.xml

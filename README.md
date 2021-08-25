@@ -1,5 +1,10 @@
 ![build-master](https://github.com/clD11/go-whispers/workflows/build-master/badge.svg?branch=master)
 
+# Go Whispers
+Performs sentiment analysis on various sources and publishes cryptocurrency price.
+
+The initial idea for this project came from three separate projects I started to do various things such as a crypto-analysis-feed, a crypto-monitor which integrates with various exchanges for price updates and a python-sentiment-analysis project. I want to take the ideas from each of them and combine them in a fun project to play around with various technologies.
+
 # Whispers Roadmap PoC
 - [x] Decide between mono/polyrepo and a basic project layout🤺
 - [X] Implement basic Golang service and containerize 🐳

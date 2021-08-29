@@ -25,28 +25,31 @@ services:
   ## INFRASTRUCTURE ##
 
   localstack:
-    image: localstack/localstack:latest
+    image: localstack/localstack:0.11.6
+    environment:
+       - SERVICES=dynamodb,sns,sqs,ec2
+       - DEFAULT_REGION=eu-west-1
     ports:
       - "4566:4566"
     healthcheck:
       test: [ "CMD", "curl", "--silent", "--show-error", "--fail", "http://localhost:4566/health" ]
 
   terraform:
-    image: hashicorp/terraform:latest
+    image: hashicorp/terraform:0.13.5
     depends_on:
       - localstack
     volumes:
       - "./infrastructure/provisioning:/terraform/source"
     environment:
+      AWS_REGION: eu-west-1
       AWS_ACCESS_KEY_ID: some-access-key
       AWS_SECRET_ACCESS_KEY: some-access-secret
-      AWS_REGION: us-east-2
     working_dir: /terraform/source
     entrypoint: ["/bin/sh","-c"]
     command:
       - |
         terraform init
-        terraform apply --auto-approve -var-file=vars/dev.tfvars
+        terraform apply --auto-approve -var-file=vars/dev.tfvars && nc -l -p 9002
 
 #  krakend-api-gateway:
 #    image: devopsfaith/krakend:latest

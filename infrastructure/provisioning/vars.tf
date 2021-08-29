@@ -2,10 +2,17 @@ variable "region" {
   type = string
 }
 
-variable "is_dev" {
+variable "access_key" {
   type = string
 }
 
+variable "secret_key" {
+  type = string
+}
+
+variable "is_dev" {
+  type = string
+}
 
 variable "main_vpc_cidr" {
   type = string

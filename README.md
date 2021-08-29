@@ -3,9 +3,7 @@
 # Go Whispers
 Performs sentiment analysis on various sources and publishes cryptocurrency price.
 
-Monorepo for go whispers
-
-* **go-whispers**
+* **Go Whispers Monorepo**
     * Getting started
     * Running locally
     * [Testing](#testing)

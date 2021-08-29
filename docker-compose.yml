@@ -1,40 +1,69 @@
 version: '3'
 services:
-  crypto-price-publisher:
-    image: crypto-price-publisher:latest
-    build:
-      context: ./golang
-      dockerfile: ./Dockerfile
+#  crypto-price-publisher:
+#    image: crypto-price-publisher:latest
+#    build:
+#      context: ./golang
+#      dockerfile: ./Dockerfile
+#    ports:
+#      - "8081:8081"
+#    expose:
+#      - 8081
+#
+#  whisper-ui:
+#    image: whisper-ui:latest
+#    build:
+#      context: ./nodejs
+#      dockerfile: ./Dockerfile
+#    ports:
+#      - "3000:3000"
+#    expose:
+#      - 3000
+#    depends_on:
+#      - krakend-api-gateway
+
+  ## INFRASTRUCTURE ##
+
+  localstack:
+    image: localstack/localstack:latest
     ports:
-      - "8081:8081"
-    expose:
-      - 8081
-  krakend-api-gateway:
-    image: devopsfaith/krakend:latest
-    volumes:
-      - ./infrastructure/apigateway:/etc/krakend
-    ports:
-      - "8080:8080"
+      - "4566:4566"
+    healthcheck:
+      test: [ "CMD", "curl", "--silent", "--show-error", "--fail", "http://localhost:4566/health" ]
+
+  terraform:
+    image: hashicorp/terraform:latest
     depends_on:
-      - crypto-price-publisher
-  elasicmq:
-    image: softwaremill/elasticmq-native
-    container_name: elasicmq-native
-    ports:
-      - "9324:9324"
-      - "9325:9325"
-    expose:
-      - 9325
+      - localstack
     volumes:
-      - ./infrastructure/messaging/elasticmq-test.conf:/opt/elasticmq.conf
-  whisper-ui:
-    image: whisper-ui:latest
-    build:
-      context: ./nodejs
-      dockerfile: ./Dockerfile
-    ports:
-      - "3000:3000"
-    expose:
-      - 3000
-    depends_on:
-      - krakend-api-gateway
+      - "./infrastructure/provisioning:/terraform/source"
+    environment:
+      AWS_ACCESS_KEY_ID: some-access-key
+      AWS_SECRET_ACCESS_KEY: some-access-secret
+      AWS_REGION: us-east-2
+    working_dir: /terraform/source
+    entrypoint: ["/bin/sh","-c"]
+    command:
+      - |
+        terraform init
+        terraform apply --auto-approve -var-file=vars/dev.tfvars
+
+#  krakend-api-gateway:
+#    image: devopsfaith/krakend:latest
+#    volumes:
+#      - ./infrastructure/apigateway:/etc/krakend
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - crypto-price-publisher
+#
+#  elasicmq:
+#    image: softwaremill/elasticmq-native
+#    container_name: elasicmq-native
+#    ports:
+#      - "9324:9324"
+#      - "9325:9325"
+#    expose:
+#      - 9325
+#    volumes:
+#      - ./infrastructure/messaging/elasticmq-test.conf:/opt/elasticmq.conf

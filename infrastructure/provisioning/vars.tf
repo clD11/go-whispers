@@ -2,6 +2,11 @@ variable "region" {
   type = string
 }
 
+variable "is_dev" {
+  type = string
+}
+
+
 variable "main_vpc_cidr" {
   type = string
 }

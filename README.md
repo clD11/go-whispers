@@ -3,6 +3,13 @@
 # Go Whispers
 Performs sentiment analysis on various sources and publishes cryptocurrency price.
 
+Monorepo for go whispers
+
+* **go-whispers**
+    * Getting started
+    * Running locally
+    * [Testing](#testing)
+
 ### Infrastructure
 * AWS - EKS, SNS, SQS
 * API gateway - [KrakenD](https://www.krakend.io/)
@@ -14,5 +21,5 @@ Performs sentiment analysis on various sources and publishes cryptocurrency pric
 * NodeJs
 
 ### Testing
-* Localstack for spinning up AWS and infra applied using Terraform, this allows for testing locally
-* Ginko for integration and e2e
+* Localstack for spinning up AWS and provisioned using Terraform
+* Integration and e2e tests use Ginko

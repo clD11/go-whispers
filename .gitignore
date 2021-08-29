@@ -4,3 +4,7 @@
 .idea/
 .idea/workspace.xml
 **/.idea/workspace.xml
+
+# Terraform
+*.tfstate*
+.terraform/

@@ -8,5 +8,5 @@ import (
 func main() {
 	log.Println("Cryptocurrency Price Publisher")
 	app := internal.NewApplication()
-	app.Start(":8081")
+	app.Initialize()
 }

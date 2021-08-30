@@ -1,4 +1,4 @@
-FROM golang:1.15 AS builder
+FROM golang:1.16 AS builder
 
 # Create directory
 RUN mkdir -p $GOPATH/src/github.com/clD11/go-whispers/golang

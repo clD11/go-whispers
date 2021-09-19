@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/clD11/go-whispers/golang/services/cryptopricepublisher/internal/websockets"
+	"github.com/clD11/go-whispers/golang/services/cryptopricepublisher/internal/websocket"
 	"github.com/clD11/go-whispers/golang/services/shared"
 )
 
@@ -13,7 +13,7 @@ type subscribePriceUpdateResponse struct {
 }
 
 // GET subscribe client for price updates
-func SubscribePriceUpdate(wsPool *websockets.WSPool, rw http.ResponseWriter, r *http.Request) {
+func SubscribePriceUpdate(wsPool *websocket.Pool, rw http.ResponseWriter, r *http.Request) {
 	log.Print("adding connection to pool")
 	err := wsPool.Connect(rw, r)
 	if err != nil {

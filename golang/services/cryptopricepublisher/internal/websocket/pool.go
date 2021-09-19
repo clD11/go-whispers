@@ -1,4 +1,4 @@
-package websockets
+package websocket
 
 import (
 	"fmt"
@@ -9,31 +9,31 @@ import (
 )
 
 // WIP
-type WSPool struct {
+type Pool struct {
 	broadcast chan string
 	conns     map[uuid.UUID]*websocket.Conn
 }
 
-func NewWsPool() *WSPool {
-	return &WSPool{
+func New() *Pool {
+	return &Pool{
 		conns: make(map[uuid.UUID]*websocket.Conn),
 	}
 }
 
 // creates ws connection and adds to pool
-func (ws *WSPool) Connect(rw http.ResponseWriter, r *http.Request) error {
+func (p *Pool) Connect(rw http.ResponseWriter, r *http.Request) error {
 	u := websocket.Upgrader{}
 	conn, err := u.Upgrade(rw, r, nil)
 	if err != nil {
 		return fmt.Errorf("wspool: could not upgrade conn %w", err)
 	}
-	ws.conns[uuid.New()] = conn
+	p.conns[uuid.New()] = conn
 	return nil
 }
 
 // broadcast message to all connections
-func (ws *WSPool) Broadcast(msg []byte) {
-	for _, conn := range ws.conns {
+func (p *Pool) Broadcast(msg []byte) {
+	for _, conn := range p.conns {
 		conn.WriteMessage(2, msg)
 	}
 }

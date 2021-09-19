@@ -2,7 +2,7 @@ package internal
 
 import (
 	"github.com/clD11/go-whispers/golang/services/cryptopricepublisher/internal/handler"
-	"github.com/clD11/go-whispers/golang/services/cryptopricepublisher/internal/websockets"
+	"github.com/clD11/go-whispers/golang/services/cryptopricepublisher/internal/websocket"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -12,7 +12,7 @@ import (
 type App struct {
 	server   *http.Server
 	Router   *mux.Router
-	wsPool   *websockets.WSPool
+	wsPool   *websocket.Pool
 	shutdown chan os.Signal
 }
 
@@ -30,7 +30,7 @@ func (a *App) Initialize() {
 }
 
 func (a *App) InitializeWSPool() {
-	a.wsPool = websockets.NewWsPool()
+	a.wsPool = websocket.New()
 }
 
 func (a *App) InitializeRoots() {

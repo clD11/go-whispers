@@ -20,12 +20,22 @@
   },
   "endpoints": [
     {
-      "endpoint": "/",
+      "endpoint": "/system-health",
+      "method": "GET",
       "output_encoding": "json",
+      "timeout": "200ms",
       "backend": [
         {
-          "url_pattern": "/",
-          "host": [ "http://crypto-price-publisher:8081" ]
+          "url_pattern": "/health",
+          "encoding": "json",
+          "host": [ "http://crypto-price-publisher:8086" ],
+          "group": "crypto-price-publisher"
+        },
+        {
+          "url_pattern": "/health",
+          "encoding": "json",
+          "host": [ "http://twitter-stream-producer:8087" ],
+          "group": "twitter-stream-producer"
         }
       ]
     }

@@ -9,4 +9,5 @@ func main() {
 	log.Println("starting cryptocurrency price publisher...")
 	app := internal.App{}
 	app.Initialize()
+	app.Run(":8086")
 }

@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3'
 
 services:
   crypto-price-publisher:
@@ -7,12 +7,12 @@ services:
       context: ./golang
       dockerfile: ./Dockerfile
       args:
-        SERVCE_NAME: crypto-price-publisher
-        EXPOSE_PORT: 8087
+        SERVICE_NAME: cryptopricepublisher
+        EXPOSE_PORT: 8086
     ports:
-      - "8087:8087"
+      - "8086:8086"
     expose:
-      - 8087
+      - 8086
 
   twitter-stream-producer:
     image: twitter-stream-producer:latest
@@ -20,55 +20,12 @@ services:
       context: ./golang
       dockerfile: ./Dockerfile
       args:
-        SERVCE_NAME: twitter-stream-producer
+        SERVICE_NAME: twitterstreamproducer
         EXPOSE_PORT: 8087
     ports:
       - "8087:8087"
     expose:
       - 8087
-
-#
-#  whisper-ui:
-#    image: whisper-ui:latest
-#    build:
-#      context: ./nodejs
-#      dockerfile: ./Dockerfile
-#    ports:
-#      - "3000:3000"
-#    expose:
-#      - 3000
-#    depends_on:
-#      - krakend-api-gateway
-
-  ## INFRASTRUCTURE ##
-
-#  localstack:
-#    image: localstack/localstack:0.12.17.3
-#    environment:
-#      - DEBUG=1
-#      - SERVICES=sts,ec2,iam
-#      - DEFAULT_REGION=us-west-2
-#    ports:
-#      - "4566:4566"
-#    healthcheck:
-#      test: [ "CMD", "curl", "--silent", "--show-error", "--fail", "http://localhost:4566/health" ]
-#
-#  terraform:
-#    image: hashicorp/terraform:0.15.2
-#    depends_on:
-#      - localstack
-#    volumes:
-#      - "./infrastructure/provisioning:/terraform/source"
-#    environment:
-#      AWS_REGION: "us-west-2"
-#      AWS_ACCESS_KEY_ID: mock_access_key
-#      AWS_SECRET_ACCESS_KEY: mock_secret_key
-#    working_dir: /terraform/source
-#    entrypoint: ["/bin/sh","-c"]
-#    command:
-#      - |
-#        terraform init
-#        terraform apply --auto-approve -var-file=vars/dev.tfvars && nc -l -p 9002
 
   krakend-api-gateway:
     image: devopsfaith/krakend:latest
@@ -78,14 +35,7 @@ services:
       - "8080:8080"
     depends_on:
       - crypto-price-publisher
-#
-#  elasicmq:
-#    image: softwaremill/elasticmq-native
-#    container_name: elasicmq-native
-#    ports:
-#      - "9324:9324"
-#      - "9325:9325"
-#    expose:
-#      - 9325
-#    volumes:
-#      - ./infrastructure/messaging/elasticmq-test.conf:/opt/elasticmq.conf
+      - twitter-stream-producer
+
+volumes:
+  krakend:

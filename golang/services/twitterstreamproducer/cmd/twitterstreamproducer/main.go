@@ -10,4 +10,5 @@ func main() {
 	log.Println("starting twitter stream producer...")
 	app := internal.App{}
 	app.Initialize()
+	app.Run(":8087")
 }

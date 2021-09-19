@@ -1,14 +1,11 @@
 package internal
 
 import (
+	"github.com/clD11/go-whispers/golang/services/cryptopricepublisher/internal/handler"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"os"
-	"os/signal"
-	"syscall"
-
-	"github.com/clD11/go-whispers/golang/services/cryptopricepublisher/internal/handler"
-	"github.com/gorilla/mux"
 )
 
 type App struct {
@@ -27,20 +24,21 @@ func (a *App) Initialize() {
 }
 
 func (a App) Run(host string) {
-	a.server = &http.Server{Addr: host, Handler: a.Router}
-
-	a.shutdown = make(chan os.Signal)
-	signal.Notify(a.shutdown, os.Interrupt, syscall.SIGTERM)
-
-	go func() {
-		<-a.shutdown
-		log.Println("Server Shutdown")
-		a.server.SetKeepAlivesEnabled(false)
-		a.server.Close()
-		close(a.shutdown)
-	}()
-
-	log.Println("Listening")
-
-	a.server.ListenAndServe()
+	log.Fatal(http.ListenAndServe(host, a.Router))
+	//a.server = &http.Server{Addr: host, Handler: a.Router}
+	//
+	//a.shutdown = make(chan os.Signal)
+	//signal.Notify(a.shutdown, os.Interrupt, syscall.SIGTERM)
+	//
+	//go func() {
+	//	<-a.shutdown
+	//	log.Println("Server Shutdown")
+	//	a.server.SetKeepAlivesEnabled(false)
+	//	a.server.Close()
+	//	close(a.shutdown)
+	//}()
+	//
+	//log.Println("Listening")
+	//
+	//a.server.ListenAndServe()
 }

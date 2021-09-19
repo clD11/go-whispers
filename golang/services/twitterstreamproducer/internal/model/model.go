@@ -1,4 +1,4 @@
-package internal
+package model
 
 type WhisperMessage struct {
 	transactionId string   `json:"transaction_id"`

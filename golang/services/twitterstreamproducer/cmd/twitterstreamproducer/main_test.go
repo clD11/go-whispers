@@ -2,15 +2,17 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/clD11/go-whispers/golang/services/cryptopricepublisher/internal/handler"
-	"github.com/stretchr/testify/assert"
+
+	"github.com/clD11/go-whispers/golang/services/twitterstreamproducer/internal"
+	"github.com/clD11/go-whispers/golang/services/twitterstreamproducer/internal/handler"
+
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"testing"
 	"time"
 
-	"github.com/clD11/go-whispers/golang/services/cryptopricepublisher/internal"
+	"github.com/stretchr/testify/assert"
 )
 
 var sut internal.App
@@ -19,7 +21,7 @@ var server *http.Server
 func TestMain(m *testing.M) {
 	sut = internal.App{}
 	sut.Initialize()
-	server = &http.Server{Addr: ":9807", Handler: sut.Router}
+	server = &http.Server{Addr: ":9808", Handler: sut.Router}
 
 	code := m.Run()
 	os.Exit(code)
@@ -35,7 +37,7 @@ func TestHealth(t *testing.T) {
 	json.NewDecoder(rw.Body).Decode(&actual)
 
 	expected := handler.HealthResponse{
-		Service:   "crypto price publisher",
+		Service:   "twitter stream producer",
 		Status:    "healthy",
 		Timestamp: time.Now().String(),
 	}

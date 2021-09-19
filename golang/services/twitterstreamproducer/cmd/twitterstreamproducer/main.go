@@ -1,10 +1,13 @@
 package main
 
 import (
-	"fmt"
+	"log"
+
+	"github.com/clD11/go-whispers/golang/services/twitterstreamproducer/internal"
 )
 
 func main() {
-	fmt.Println("Starting Twitter Stream Producer")
-	fmt.Println("Stopping Twitter Stream Producer")
+	log.Println("starting twitter stream producer...")
+	app := internal.App{}
+	app.Initialize()
 }

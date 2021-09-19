@@ -1,32 +1,32 @@
 package internal
 
 import (
-	"github.com/clD11/go-whispers/golang/services/cryptopricepublisher/internal/handler"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/clD11/go-whispers/golang/services/cryptopricepublisher/internal/handler"
+	"github.com/gorilla/mux"
 )
 
-type Application struct {
+type App struct {
 	server   *http.Server
 	Router   *mux.Router
 	shutdown chan os.Signal
 }
 
-func NewApplication() Application {
-	return Application{}
+func (a *App) Health(w http.ResponseWriter, r *http.Request) {
+	handler.Health(w, r)
 }
 
-func (a *Application) Initialize() {
-	log.Println("Initializing Routes")
+func (a *App) Initialize() {
 	a.Router = mux.NewRouter()
-	a.Router.HandleFunc("/", handler.GetLanding).Methods(http.MethodGet)
+	a.Router.HandleFunc("/health", a.Health).Methods(http.MethodGet)
 }
 
-func (a Application) Run(host string) {
+func (a App) Run(host string) {
 	a.server = &http.Server{Addr: host, Handler: a.Router}
 
 	a.shutdown = make(chan os.Signal)

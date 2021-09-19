@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	log.Println("Cryptocurrency Price Publisher")
-	app := internal.NewApplication()
+	log.Println("starting cryptocurrency price publisher...")
+	app := internal.App{}
 	app.Initialize()
 }

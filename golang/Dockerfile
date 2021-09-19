@@ -1,10 +1,12 @@
 FROM golang:1.16 AS builder
 
+ARG SERVCE_NAME
+
 # Create directory
-RUN mkdir -p $GOPATH/src/github.com/clD11/go-whispers/golang
+RUN mkdir -p $GOPATH/src/github.com/clD11/true-rising-factorize/golang
 
 # Set the Current Working Directory inside the container
-WORKDIR $GOPATH/src/github.com/clD11/go-whispers/golang
+WORKDIR $GOPATH/src/github.com/clD11/true-rising-factorize/golang
 
 # Copy everything from the current directory to the workdir inside the container
 COPY . .
@@ -16,7 +18,7 @@ ENV CGO_ENABLED 0
 ENV GOARCH amd64
 
 ## Install binary into go/bin
-RUN go install ./services/cryptopricepublisher/...
+RUN go install ./services/$SERVCE_NAME/...
 
 # Build smaller image
 FROM alpine:latest
@@ -24,9 +26,13 @@ FROM alpine:latest
 RUN apk --no-cache add ca-certificates
 
 COPY --from=builder /go/bin /
+COPY --from=builder /go/bin /
 
-## This container exposes port 8080 to the outside world
-EXPOSE 8081
+ARG SERVCE_NAME
+RUN mv $SERVCE_NAME go-whispers-app
+
+ARG EXPOSE_PORT
+EXPOSE $EXPOSE_PORT
 
 ## Run the executable
-ENTRYPOINT ["/cryptopricepublisher"]
+ENTRYPOINT ["/go-whispers-app"]

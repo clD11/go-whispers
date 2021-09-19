@@ -10,6 +10,10 @@ variable "secret_key" {
   type = string
 }
 
+variable "is_s3_force_path_style" {
+  type = string
+}
+
 variable "is_dev" {
   type = string
 }

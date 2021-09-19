@@ -8,11 +8,25 @@ services:
       dockerfile: ./Dockerfile
       args:
         SERVCE_NAME: crypto-price-publisher
-        EXPOSE_PORT: 8081
+        EXPOSE_PORT: 8087
     ports:
-      - "8081:8081"
+      - "8087:8087"
     expose:
-      - 8081
+      - 8087
+
+  twitter-stream-producer:
+    image: twitter-stream-producer:latest
+    build:
+      context: ./golang
+      dockerfile: ./Dockerfile
+      args:
+        SERVCE_NAME: twitter-stream-producer
+        EXPOSE_PORT: 8087
+    ports:
+      - "8087:8087"
+    expose:
+      - 8087
+
 #
 #  whisper-ui:
 #    image: whisper-ui:latest

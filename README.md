@@ -9,14 +9,16 @@ Performs sentiment analysis on various sources and publishes cryptocurrency pric
     * [Testing](#testing)
 
 ### Infrastructure
-* AWS - EKS, SNS, SQS
 * API gateway - [KrakenD](https://www.krakend.io/)
+* AWS - EKS, SNS, SQS
+* Terraform
 
 ### Backend
 * Golang
 
 ### UI
-* NodeJs
+* Node.jS
+* React
 
 ### Testing
 * Localstack for spinning up AWS and provisioned using Terraform

@@ -2,6 +2,7 @@ package internal
 
 import (
 	"github.com/clD11/go-whispers/golang/services/cryptopricepublisher/internal/handler"
+	"github.com/clD11/go-whispers/golang/services/cryptopricepublisher/internal/websockets"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -11,16 +12,31 @@ import (
 type App struct {
 	server   *http.Server
 	Router   *mux.Router
+	wsPool   *websockets.WSPool
 	shutdown chan os.Signal
 }
 
-func (a *App) Health(w http.ResponseWriter, r *http.Request) {
-	handler.Health(w, r)
+func (a *App) Health(rw http.ResponseWriter, r *http.Request) {
+	handler.Health(rw, r)
+}
+
+func (a *App) SubscribePriceUpdate(rw http.ResponseWriter, r *http.Request) {
+	handler.SubscribePriceUpdate(a.wsPool, rw, r)
 }
 
 func (a *App) Initialize() {
+	a.InitializeRoots()
+	a.InitializeWSPool()
+}
+
+func (a *App) InitializeWSPool() {
+	a.wsPool = websockets.NewWsPool()
+}
+
+func (a *App) InitializeRoots() {
 	a.Router = mux.NewRouter()
 	a.Router.HandleFunc("/health", a.Health).Methods(http.MethodGet)
+	a.Router.HandleFunc("/subscribe-price-update", a.SubscribePriceUpdate).Methods(http.MethodGet)
 }
 
 func (a App) Run(host string) {

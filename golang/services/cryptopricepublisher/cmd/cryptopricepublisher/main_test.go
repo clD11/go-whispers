@@ -43,3 +43,7 @@ func TestHealth(t *testing.T) {
 	assert.Equal(t, expected.Service, actual.Service)
 	assert.Equal(t, expected.Status, actual.Status)
 }
+
+func TestWebsocket(t *testing.T) {
+
+}

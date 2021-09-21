@@ -72,13 +72,12 @@ func (k *KrakenClient) SubscribePublic(subscribeMessage SubscribeMessage) error 
 	return nil
 }
 
-func (k *KrakenClient) ReadMessage() {
+func (k *KrakenClient) ReadMessage() []byte {
 	_, bytes, err := k.conn.ReadMessage()
 	if err != nil {
 		log.Println("read:", err)
-		return
 	}
-	log.Print(string(bytes))
+	return bytes
 }
 
 func (k *KrakenClient) Close() {

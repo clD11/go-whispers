@@ -31,13 +31,13 @@ func (a *App) Initialize() {
 
 func (a *App) initializeBroadcaster() {
 	a.broadcaster = websocket.NewBroadcaster()
-	a.broadcaster.Start()
+	go a.broadcaster.Start()
 }
 
 func (a *App) initializeRoots() {
 	a.Router = mux.NewRouter()
 	a.Router.HandleFunc("/health", a.Health).Methods(http.MethodGet)
-	a.Router.HandleFunc("/ws", a.SubscribePriceUpdate)
+	a.Router.HandleFunc("/subscribe", a.SubscribePriceUpdate)
 }
 
 func (a App) Run(host string) {

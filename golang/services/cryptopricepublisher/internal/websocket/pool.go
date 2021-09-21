@@ -10,8 +10,7 @@ import (
 
 // WIP
 type Pool struct {
-	broadcast chan string
-	conns     map[uuid.UUID]*websocket.Conn
+	conns map[uuid.UUID]*websocket.Conn
 }
 
 func New() *Pool {
@@ -20,8 +19,8 @@ func New() *Pool {
 	}
 }
 
-// creates ws connection and adds to pool
-func (p *Pool) Connect(rw http.ResponseWriter, r *http.Request) error {
+// upgrade and add connection to ws pool
+func (p *Pool) Add(rw http.ResponseWriter, r *http.Request) error {
 	u := websocket.Upgrader{}
 	conn, err := u.Upgrade(rw, r, nil)
 	if err != nil {
@@ -29,11 +28,4 @@ func (p *Pool) Connect(rw http.ResponseWriter, r *http.Request) error {
 	}
 	p.conns[uuid.New()] = conn
 	return nil
-}
-
-// broadcast message to all connections
-func (p *Pool) Broadcast(msg []byte) {
-	for _, conn := range p.conns {
-		conn.WriteMessage(2, msg)
-	}
 }

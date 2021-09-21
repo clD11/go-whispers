@@ -21,12 +21,12 @@ func NewBroadcaster() *Broadcaster {
 		pool:  New(),
 		close: make(chan os.Signal),
 	}
-	signal.Notify(b.close, os.Interrupt, syscall.SIGTERM)
+	signal.Notify(b.close, os.Interrupt, syscall.SIGKILL, syscall.SIGTERM)
 	return b
 }
 
 func (b *Broadcaster) Subscribe(rw http.ResponseWriter, r *http.Request) error {
-	err := b.pool.Connect(rw, r)
+	err := b.pool.Add(rw, r)
 	if err != nil {
 		return fmt.Errorf("broadcaster: could not add conn %w", err)
 	}
@@ -50,11 +50,18 @@ func (b *Broadcaster) Start() {
 		for {
 			select {
 			case <-ctx.Done():
-				log.Print("closing kraken client")
+				log.Print("shutting down broadcaster")
+				for id, c := range b.pool.conns {
+					log.Printf("close conn %s", id.String())
+					c.Close()
+				}
 				k.Close()
 				return
 			default:
-				k.ReadMessage()
+				message := k.ReadMessage()
+				for _, conn := range b.pool.conns {
+					conn.WriteMessage(2, message)
+				}
 			}
 		}
 

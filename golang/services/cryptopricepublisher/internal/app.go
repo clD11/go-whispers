@@ -10,10 +10,10 @@ import (
 )
 
 type App struct {
-	server   *http.Server
-	Router   *mux.Router
-	wsPool   *websocket.Pool
-	shutdown chan os.Signal
+	server      *http.Server
+	Router      *mux.Router
+	broadcaster *websocket.Broadcaster
+	shutdown    chan os.Signal
 }
 
 func (a *App) Health(rw http.ResponseWriter, r *http.Request) {
@@ -21,22 +21,23 @@ func (a *App) Health(rw http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) SubscribePriceUpdate(rw http.ResponseWriter, r *http.Request) {
-	handler.SubscribePriceUpdate(a.wsPool, rw, r)
+	handler.SubscribePriceUpdate(a.broadcaster, rw, r)
 }
 
 func (a *App) Initialize() {
-	a.InitializeRoots()
-	a.InitializeWSPool()
+	a.initializeRoots()
+	a.initializeBroadcaster()
 }
 
-func (a *App) InitializeWSPool() {
-	a.wsPool = websocket.New()
+func (a *App) initializeBroadcaster() {
+	a.broadcaster = websocket.NewBroadcaster()
+	a.broadcaster.Start()
 }
 
-func (a *App) InitializeRoots() {
+func (a *App) initializeRoots() {
 	a.Router = mux.NewRouter()
 	a.Router.HandleFunc("/health", a.Health).Methods(http.MethodGet)
-	a.Router.HandleFunc("/subscribe-price-update", a.SubscribePriceUpdate).Methods(http.MethodGet)
+	a.Router.HandleFunc("/ws", a.SubscribePriceUpdate)
 }
 
 func (a App) Run(host string) {

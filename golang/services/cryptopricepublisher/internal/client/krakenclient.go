@@ -32,19 +32,19 @@ type Subscription struct {
 }
 
 type TickerMessage struct {
-	ask                        []string `json:"a"`
-	bid                        []string `json:"b"`
-	lastTradeClosed            []string `json:"c"`
-	volume                     []string `json:"v"`
-	volumeWeightedAveragePrice []string `json:"p"`
-	numberOfTrades             []string `json:"t"`
-	low                        []string `json:"l"`
-	high                       []string `json:"h"`
-	todayOpenPrice             string   `json:"o"`
+	Ask                        []string `json:"a"`
+	Bid                        []string `json:"b"`
+	LastTradeClosed            []string `json:"c"`
+	Volume                     []string `json:"v"`
+	VolumeWeightedAveragePrice []string `json:"p"`
+	NumberOfTrades             []string `json:"t"`
+	Low                        []string `json:"l"`
+	High                       []string `json:"h"`
+	TodayOpenPrice             string   `json:"o"`
 }
 
 // return a new kraken client and opens a new connection
-func newKrakenClient() *KrakenClient {
+func NewKrakenClient() *KrakenClient {
 	url := url.URL{Scheme: scheme, Host: krakenWSUrl}
 	conn, _, err := websocket.DefaultDialer.Dial(url.String(), nil)
 
@@ -56,8 +56,6 @@ func newKrakenClient() *KrakenClient {
 		conn: conn,
 	}
 }
-
-var count = 0
 
 // subscribes to a public channel by sending a subscribe message
 func (k *KrakenClient) SubscribePublic(subscribeMessage SubscribeMessage) error {
@@ -71,19 +69,16 @@ func (k *KrakenClient) SubscribePublic(subscribeMessage SubscribeMessage) error 
 		return fmt.Errorf("krakenclient: could not subscribe to channel %w", err)
 	}
 
-	input := make(chan string)
-
-	go func(input chan string) {
-		for {
-			_, _, err := k.conn.ReadMessage()
-			if err != nil {
-				log.Println("read:", err)
-				return
-			}
-		}
-	}(input)
-
 	return nil
+}
+
+func (k *KrakenClient) ReadMessage() {
+	_, bytes, err := k.conn.ReadMessage()
+	if err != nil {
+		log.Println("read:", err)
+		return
+	}
+	log.Print(string(bytes))
 }
 
 func (k *KrakenClient) Close() {

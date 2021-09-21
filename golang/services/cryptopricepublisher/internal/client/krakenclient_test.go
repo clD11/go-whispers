@@ -23,6 +23,7 @@ func startProcess() {
 			Name: "ticker",
 		},
 	}
-	krakenClient := newKrakenClient()
+	krakenClient := NewKrakenClient()
 	krakenClient.SubscribePublic(subscribeEvent)
+	krakenClient.ReadMessage()
 }

@@ -13,9 +13,9 @@ type subscribePriceUpdateResponse struct {
 }
 
 // GET subscribe client for price updates
-func SubscribePriceUpdate(wsPool *websocket.Pool, rw http.ResponseWriter, r *http.Request) {
+func SubscribePriceUpdate(broadcaster *websocket.Broadcaster, rw http.ResponseWriter, r *http.Request) {
 	log.Print("adding connection to pool")
-	err := wsPool.Connect(rw, r)
+	err := broadcaster.Subscribe(rw, r)
 	if err != nil {
 		shared.WriteErrorResponse(rw, http.StatusInternalServerError, err.Error())
 		return
